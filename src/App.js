@@ -1,16 +1,15 @@
 import React from 'react';
+import Scale  from './components/scale';
+import Search  from './components/search';
 
 const App = () => {
     return (
-        <>
-            <div style={{
-                display: 'flex',
-                height: '50%',
-                flexDirection: 'column'
-            }}>
-            </div>
+        <> 
+            <Search />
+            <Scale />
         </>
     )
 }
 
 export default App;
+

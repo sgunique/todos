@@ -1,28 +1,61 @@
-const path = require('path');
+const path = require("path");
+const webpack = require('webpack');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
-    output: {
-        filename: "main.js",
-        path: path.resolve(__dirname, "dist")
+    entry: {
+        main: [
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            './src/index.js'
+        ]
     },
+    output: {
+        path: path.join(__dirname, 'dist'),
+        publicPath: '/',
+        filename: '[name].js'
+    },
+    mode: 'development',
+    target: 'web',
+    devtool: 'source-map',
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
-                use: 'babel-loader'
+                exclude: /node_modules/,
+                loader: "babel-loader",
             },
             {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource'
+                // Loads the javacript into html template provided.
+                // Entry point is set below in HtmlWebPackPlugin in Plugins 
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: "html-loader",
+                        //options: { minimize: true }
+                    }
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: ['file-loader']
             }
         ]
     },
-    optimization: {
-        minimize: false
-    },
-    devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        port: 9000
-    }
-};
+    plugins: [
+        new HtmlWebPackPlugin({
+            template: "./index.html",
+            filename: "./index.html",
+            excludeChunks: ['server']
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new ESLintPlugin({
+            failOnError: false,
+        })
+    ]
+}
