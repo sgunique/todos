@@ -24,6 +24,13 @@ export const todoReducer = (state, payload) => {
                 }
                 return item;
             });
+        case 'TODO_UPDATE_TEXT':
+            return state.map((item) => {
+                if (item.id === id) {
+                    item.text = data.text;
+                }
+                return item;
+            });
 
         case 'TODO_UN_DONE':
             return state.map((item) => {
