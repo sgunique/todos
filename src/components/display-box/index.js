@@ -12,8 +12,8 @@ import UndoIcon from '@material-ui/icons/Undo';
 import EditIcon from '@material-ui/icons/Edit';
 import useData from '../../hooks/useData';
 import EditInput from './edit-input';
-import { 
-    todoUnDoneAction, 
+import {
+    todoUnDoneAction,
     todoDoneAction,
     todoDeleteAction
 } from './actions';
@@ -42,7 +42,20 @@ const wrapSetter = (setter, methods, prefix = '') => {
     return allMethods.reduce((acc, funName) => {
         acc[`${prefix}${funName}`] = methods[funName](setter);
         return acc;
-    }, {});
+    }, { });
+}
+
+const DoneIconToggler = ({
+    done,
+    item,
+    handleTodoUnDone,
+    handleTodoDone
+}) => {
+    if (done) {
+        return <UndoIcon onClick={handleTodoUnDone(item)} />
+    }
+
+    return <DoneCheckCircleOutlineIcon onClick={handleTodoDone(item)} />
 }
 
 const DisplayBox = () => {
@@ -54,11 +67,11 @@ const DisplayBox = () => {
         _todoUnDoneAction,
         _todoDoneAction,
         _todoDeleteAction
-     } = wrapSetter(setTodoItems, {
-            todoUnDoneAction, 
-            todoDoneAction, 
-            todoDeleteAction
-        }, '_');
+    } = wrapSetter(setTodoItems, {
+        todoUnDoneAction,
+        todoDoneAction,
+        todoDeleteAction
+    }, '_');
 
     const handleTodoUnDone = item => () => {
         _todoUnDoneAction({
@@ -101,7 +114,7 @@ const DisplayBox = () => {
                                             alignItems="center"
                                             wrap="nowrap"
                                         >
-                                            
+
                                             <EditInput
                                                 id={id}
                                                 done={done}
@@ -117,16 +130,11 @@ const DisplayBox = () => {
                                                 }} />
                                             }
 
-
-                                            {
-                                                done ?
-                                                    <UndoIcon
-                                                        onClick={handleTodoUnDone(item)} />
-                                                    :
-                                                    <DoneCheckCircleOutlineIcon
-                                                        onClick={handleTodoDone(item)} />
-                                            }
-
+                                            <DoneIconToggler
+                                                done={done}
+                                                item={item}
+                                                handleTodoUnDone={handleTodoUnDone}
+                                                handleTodoDone={handleTodoDone} />
 
                                             <DeleteIcon className={classes.icon}
                                                 onClick={handleTodoDelete(item)} />
