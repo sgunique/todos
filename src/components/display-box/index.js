@@ -67,6 +67,10 @@ const DisplayBox = () => {
         todoEditAction,
     }, '_');
 
+    // const handleCallback = (item, dispatcher, getRequiredData) => (data = {}) => {
+    //     dispatcher({...getRequiredData(item), ...data});
+    // };
+
     const handleTodoUnDone = item => () => {
         _todoUnDoneAction({
             id: item.id,
