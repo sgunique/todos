@@ -6,7 +6,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 module.exports = {
     entry: {
         main: [
-            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            'webpack-hot-middleware/client?path=http://localhost:8080/__webpack_hmr&timeout=20000',
             './src/index.js'
         ]
     },
@@ -45,6 +45,11 @@ module.exports = {
                 use: ['file-loader']
             }
         ]
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        }
     },
     plugins: [
         new HtmlWebPackPlugin({
