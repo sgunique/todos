@@ -19,3 +19,10 @@ export const todoDeleteAction = Setter => data => {
         data,
     });
 }
+
+export const todoEditAction = Setter => data => {
+    Setter({
+        type: 'TODO_EDIT',
+        data,
+    });
+}

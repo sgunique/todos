@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const EditInput = ({
-    setIsEditable,
+    handleTodoEdit,
     setTodoItems,
     text,
     id,
@@ -40,7 +40,7 @@ const EditInput = ({
 
     const handleOnKeypress = (e) => {
         if (e.which == 13) {
-            setIsEditable(false);
+            handleTodoEdit(false);
         }
     }
 

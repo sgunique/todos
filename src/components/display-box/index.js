@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     CSSTransition,
     TransitionGroup,
@@ -12,10 +12,13 @@ import UndoIcon from '@material-ui/icons/Undo';
 import EditIcon from '@material-ui/icons/Edit';
 import useData from '../../hooks/useData';
 import EditInput from './edit-input';
+import { wrapSetter } from '../../utils';
+
 import {
     todoUnDoneAction,
     todoDoneAction,
-    todoDeleteAction
+    todoDeleteAction,
+    todoEditAction,
 } from './actions';
 
 import './displaybox.css';
@@ -27,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         '& > *': {
             padding: '5px 10px',
             margin: theme.spacing(1),
-            minWidth: theme.spacing(4),
+            minWidth: theme.spacing(8),
             height: 'auto',
         },
     },
@@ -36,41 +39,32 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const wrapSetter = (setter, methods, prefix = '') => {
-    const allMethods = Object.keys(methods);
-
-    return allMethods.reduce((acc, funName) => {
-        acc[`${prefix}${funName}`] = methods[funName](setter);
-        return acc;
-    }, { });
-}
-
 const DoneIconToggler = ({
     done,
-    item,
     handleTodoUnDone,
     handleTodoDone
 }) => {
     if (done) {
-        return <UndoIcon onClick={handleTodoUnDone(item)} />
+        return <UndoIcon onClick={handleTodoUnDone} />
     }
 
-    return <DoneCheckCircleOutlineIcon onClick={handleTodoDone(item)} />
+    return <DoneCheckCircleOutlineIcon onClick={handleTodoDone} />
 }
 
 const DisplayBox = () => {
     const classes = useStyles();
     const [items, setTodoItems] = useData();
-    const [isEditable, setIsEditable] = useState(false);
 
     const {
         _todoUnDoneAction,
         _todoDoneAction,
-        _todoDeleteAction
+        _todoDeleteAction,
+        _todoEditAction,
     } = wrapSetter(setTodoItems, {
         todoUnDoneAction,
         todoDoneAction,
-        todoDeleteAction
+        todoDeleteAction,
+        todoEditAction,
     }, '_');
 
     const handleTodoUnDone = item => () => {
@@ -83,7 +77,8 @@ const DisplayBox = () => {
         _todoDoneAction({
             id: item.id,
         });
-        setIsEditable(false);
+
+        handleTodoEdit(item)(false);
     };
 
     const handleTodoDelete = item => () => {
@@ -92,12 +87,19 @@ const DisplayBox = () => {
         });
     }
 
+    const handleTodoEdit = item => data => {
+        _todoEditAction({
+            id: item.id,
+            isEditable: data === false ? false : !item.isEditable,
+        });
+    }
+
     return (
         <div>
             <TransitionGroup>
                 {
                     items.map(item => {
-                        const { id, text, done } = item;
+                        const { id, text, done, isEditable } = item;
 
                         return (
                             <CSSTransition
@@ -119,22 +121,20 @@ const DisplayBox = () => {
                                                 id={id}
                                                 done={done}
                                                 isEditable={isEditable}
-                                                setIsEditable={setIsEditable}
+                                                item={item}
+                                                handleTodoEdit={handleTodoEdit(item)}
                                                 setTodoItems={setTodoItems}
                                                 text={text} />
 
 
                                             {
-                                                !done && <EditIcon onClick={() => {
-                                                    setIsEditable(!isEditable);
-                                                }} />
+                                                !done && <EditIcon onClick={handleTodoEdit(item)} />
                                             }
 
                                             <DoneIconToggler
                                                 done={done}
-                                                item={item}
-                                                handleTodoUnDone={handleTodoUnDone}
-                                                handleTodoDone={handleTodoDone} />
+                                                handleTodoUnDone={handleTodoUnDone(item)}
+                                                handleTodoDone={handleTodoDone(item)} />
 
                                             <DeleteIcon className={classes.icon}
                                                 onClick={handleTodoDelete(item)} />

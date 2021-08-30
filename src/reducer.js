@@ -4,7 +4,7 @@ export const todoReducer = (state, payload) => {
         return state;
     }
 
-    const { data, type } = payload;
+    const { data = {}, type } = payload;
     const { id } = data;
 
     switch (type) {
@@ -36,6 +36,14 @@ export const todoReducer = (state, payload) => {
             return state.map((item) => {
                 if (item.id === id) {
                     item.done = false;
+                }
+                return item;
+            });
+
+        case 'TODO_EDIT':
+            return state.map((item) => {
+                if (item.id === id) {
+                    item.isEditable = data.isEditable;
                 }
                 return item;
             });
