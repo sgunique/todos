@@ -19,7 +19,7 @@ import {
     todoDoneAction,
     todoDeleteAction,
     todoEditAction,
-} from './actions';
+} from '../../store/actions';
 
 import './displaybox.css';
 
@@ -66,10 +66,6 @@ const DisplayBox = () => {
         todoDeleteAction,
         todoEditAction,
     }, '_');
-
-    // const handleCallback = (item, dispatcher, getRequiredData) => (data = {}) => {
-    //     dispatcher({...getRequiredData(item), ...data});
-    // };
 
     const handleTodoUnDone = item => () => {
         _todoUnDoneAction({

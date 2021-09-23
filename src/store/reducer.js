@@ -1,3 +1,12 @@
+import {
+    TODO_ADD,
+    TODO_DELETE,
+    TODO_DONE,
+    TODO_UPDATE_TEXT,
+    TODO_UN_DONE,
+    TODO_EDIT
+} from './actions';
+import AppStorage from '../utils/storage';
 
 export const todoReducer = (state, payload) => {
     if (!payload && !payload.data) {
@@ -8,23 +17,23 @@ export const todoReducer = (state, payload) => {
     const { id } = data;
 
     switch (type) {
-        case 'TODO_ADD':
+        case TODO_ADD:
             state.push(data);
             return [...state];
-
-        case 'TODO_DELETE':
+            
+        case TODO_DELETE:
             return [...state.filter((item) => {
                 return item.id != id
             })];
 
-        case 'TODO_DONE':
+        case TODO_DONE:
             return state.map((item) => {
                 if (item.id === id) {
                     item.done = true;
                 }
                 return item;
             });
-        case 'TODO_UPDATE_TEXT':
+        case TODO_UPDATE_TEXT:
             return state.map((item) => {
                 if (item.id === id) {
                     item.text = data.text;
@@ -32,7 +41,7 @@ export const todoReducer = (state, payload) => {
                 return item;
             });
 
-        case 'TODO_UN_DONE':
+        case TODO_UN_DONE:
             return state.map((item) => {
                 if (item.id === id) {
                     item.done = false;
@@ -40,7 +49,7 @@ export const todoReducer = (state, payload) => {
                 return item;
             });
 
-        case 'TODO_EDIT':
+        case TODO_EDIT:
             return state.map((item) => {
                 if (item.id === id) {
                     item.isEditable = data.isEditable;

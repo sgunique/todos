@@ -4,6 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
 import useData from '../../hooks/useData';
+import { TODO_ADD } from '../../store/actions';
 
 import './input.css';
 
@@ -18,7 +19,7 @@ const InputBox = () => {
     const handleOnKeypress = e => {
         if (e.which == 13) {
             setTodoItems({
-                type: 'TODO_ADD',
+                type: TODO_ADD,
                 data: {
                     id: new Date().getTime(),
                     text: e.target.value,
