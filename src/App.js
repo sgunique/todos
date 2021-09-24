@@ -1,5 +1,4 @@
 import React, { useReducer } from 'react';
-// import Scale from './components/scale';
 import Input from './components/input';
 import DisplayBox from './components/display-box';
 import { todoReducer } from './store/reducer';
@@ -15,7 +14,6 @@ const App = ({ savedItems }) => {
         <DataContext.Provider value={[todoItems, setTodoItems]}>
             <Input />
             <DisplayBox />
-            {/* <Scale /> */}
         </DataContext.Provider>
     )
 }

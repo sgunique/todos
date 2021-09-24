@@ -6,7 +6,6 @@ import {
     TODO_UN_DONE,
     TODO_EDIT
 } from './actions';
-import AppStorage from '../utils/storage';
 
 export const todoReducer = (state, payload) => {
     if (!payload && !payload.data) {
@@ -16,8 +15,11 @@ export const todoReducer = (state, payload) => {
     const { data = {}, type } = payload;
     const { id } = data;
 
+    const time = new Date().toLocaleString();
+
     switch (type) {
         case TODO_ADD:
+            data.time = time;
             state.push(data);
             return [...state];
             
@@ -29,6 +31,7 @@ export const todoReducer = (state, payload) => {
         case TODO_DONE:
             return state.map((item) => {
                 if (item.id === id) {
+                    item.time = time;
                     item.done = true;
                 }
                 return item;
@@ -36,6 +39,7 @@ export const todoReducer = (state, payload) => {
         case TODO_UPDATE_TEXT:
             return state.map((item) => {
                 if (item.id === id) {
+                    item.time = time;
                     item.text = data.text;
                 }
                 return item;
@@ -45,6 +49,7 @@ export const todoReducer = (state, payload) => {
             return state.map((item) => {
                 if (item.id === id) {
                     item.done = false;
+                    item.time = time;
                 }
                 return item;
             });
@@ -52,6 +57,7 @@ export const todoReducer = (state, payload) => {
         case TODO_EDIT:
             return state.map((item) => {
                 if (item.id === id) {
+                    item.time = time;
                     item.isEditable = data.isEditable;
                 }
                 return item;

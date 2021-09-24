@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         display: 'flex',
     },
+    small: {
+        fontSize: '12px',
+        paddingTop: '10px'
+    }
 }));
 
 const DoneIconToggler = ({
@@ -90,7 +94,7 @@ const DisplayBox = () => {
     const handleTodoEdit = item => data => {
         _todoEditAction({
             id: item.id,
-            isEditable: data === false ? false : !item.isEditable,
+            isEditable: data || !item.isEditable,
         });
     }
 
@@ -121,6 +125,7 @@ const DisplayBox = () => {
                                                 id={id}
                                                 done={done}
                                                 isEditable={isEditable}
+                                                disable={done || !isEditable}
                                                 item={item}
                                                 handleTodoEdit={handleTodoEdit(item)}
                                                 setTodoItems={setTodoItems}
@@ -138,6 +143,15 @@ const DisplayBox = () => {
 
                                             <DeleteIcon className={classes.icon}
                                                 onClick={handleTodoDelete(item)} />
+                                        </Grid>
+                                        <Grid
+                                            container
+                                            direction="row"
+                                            justifyContent="flex-end"
+                                            alignItems="center"
+                                            wrap="nowrap"
+                                        >
+                                            <i className={classes.small}>{item.time}</i>
                                         </Grid>
                                     </Paper>
                                 </div>

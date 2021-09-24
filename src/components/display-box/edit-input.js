@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { TODO_UPDATE_TEXT } from '../../store/actions';
@@ -12,12 +12,14 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         paddingRight: '10px',
         textDecoration: 'line-through',
-        resize: 'none',
     },
     textarea: { 
         minWidth: '300px', 
         lineHeight: '20px', 
         fontSize: '16px' 
+    },
+    noResize: {
+        resize: 'none',
     }
 }));
 
@@ -26,13 +28,16 @@ const EditInput = ({
     setTodoItems,
     text,
     id,
-    isEditable,
     done,
+    disable,
 }) => {
+    const inputRef = useRef(null);
+
     const classes = useStyles();
     const restClasses = [
-        (done || isEditable) ? classes.textDone : classes.text, 
-        classes.textarea
+        done ? classes.textDone : classes.text, 
+        classes.textarea,
+        disable ? classes.noResize : ''
     ].join(" ");
 
     const handleOnChange = (e) => {
@@ -50,9 +55,17 @@ const EditInput = ({
             handleTodoEdit(false);
         }
     }
+    
+    useEffect(() => {
+        const elm = inputRef.current;
+        elm.selectionStart = text.length;
+        elm.selectionEnd = text.length;
+        elm.focus();
+    }, [!disable, text]);
 
     return <TextareaAutosize
-                disabled={done || isEditable}
+                ref={inputRef}
+                disabled={disable}
                 minRows={2}
                 value={text}
                 onChange={handleOnChange}

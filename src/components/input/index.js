@@ -24,6 +24,7 @@ const InputBox = () => {
                     id: new Date().getTime(),
                     text: e.target.value,
                     done: false,
+                    isEditable: false,
                 }
             });
 
