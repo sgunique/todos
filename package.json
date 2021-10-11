@@ -7,9 +7,9 @@
     "test": "jest",
     "test:c": "jest --coverage",
     "devs": "webpack serve",
-    "build-dev": "rm -rf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.config.js",
-    "build-prod": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
-    "start": "node ./dist/server.js",
+    "build-dev": "rm -rf docs && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.config.js",
+    "build-prod": "rm -rf docs && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
+    "start": "node ./docs/server.js",
     "lint": "eslint ./src",
     "lint:fix": "yarn lint --fix"
   },

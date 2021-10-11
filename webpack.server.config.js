@@ -10,7 +10,7 @@ module.exports = (env, { mode }) => {
         server: isProd ? './server/prod-server.js' : './server/dev-server.js',
       },
       output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'docs'),
         publicPath: '/',
         filename: '[name].js'
       },
